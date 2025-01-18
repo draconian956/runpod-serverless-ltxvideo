@@ -49,41 +49,42 @@ RUN python3 -m pip install --upgrade pip && \
 COPY src /app/
 
 # Create necessary directories
-RUN mkdir -p models/checkpoints models/vae models/diffusion_models models/clip models/text_encoders models/LLM
+RUN mkdir -p models/checkpoints models/vae models/diffusion_models models/clip models/text_encoders models/LLM input
 
-COPY ./SafeTensors/ltx-video-2b-v0.9.safetensors /app/ComfyUI/models/checkpoints/
-COPY ./SafeTensors/mochi_preview_vae_decoder_bf16.safetensors /app/ComfyUI/models/vae/mochi/
+COPY ./SafeTensors/lightricksLTXV_2b091.safetensors /app/ComfyUI/models/checkpoints/
+COPY ./SafeTensors/stableDiffusion3SD3_textEncoderT5XXLFP16.safetensors /app/ComfyUI/models/clip/
 COPY ./PixArt-XL-2-1024-MS /app/ComfyUI/models/text_encoders/PixArt-XL-2-1024-MS/
+COPY ./LLM /app/ComfyUI/models/LLM/
+
+COPY ./placeholder_video.mp4 /app/ComfyUI/input/
+COPY ./placeholder_image.png /app/ComfyUI/input/
 
 RUN cd ./custom_nodes && \
 	git clone https://github.com/ltdrdata/ComfyUI-Manager.git && \
 	git clone https://github.com/Lightricks/ComfyUI-LTXVideo.git && \
 	git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git && \
-	git clone https://github.com/SeanScripts/ComfyUI-Unload-Model.git && \
-	git clone https://github.com/kijai/ComfyUI-MochiWrapper.git
+	git clone https://github.com/SeanScripts/ComfyUI-Unload-Model.git
 
 RUN cd ./custom_nodes && \
-	python3 -m pip install -r ComfyUI-LTXVideo/requirements.txt \
-	-r ComfyUI-MochiWrapper/requirements.txt \
-	-r ComfyUI-VideoHelperSuite/requirements.txt --no-cache-dir
+	python3 -m pip install --no-cache-dir -r ComfyUI-LTXVideo/requirements.txt \
+	-r ComfyUI-VideoHelperSuite/requirements.txt
 
 RUN cd ./custom_nodes && \
 	git clone https://github.com/WASasquatch/was-node-suite-comfyui.git && \
 	git clone https://github.com/kijai/ComfyUI-Florence2.git && \
-	git clone https://github.com/giriss/comfy-image-saver.git && \
 	git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git && \
 	git clone https://github.com/M1kep/ComfyLiterals.git && \
 	git clone https://github.com/DoctorDiffusion/ComfyUI-MediaMixer.git && \
-	git clone https://github.com/crystian/ComfyUI-Crystools.git && \
-	git clone https://github.com/kijai/ComfyUI-KJNodes.git
+	git clone https://github.com/kijai/ComfyUI-KJNodes.git && \
+	git clone https://github.com/melMass/comfy_mtb.git && \
+	git clone https://github.com/theUpsider/ComfyUI-Logic.git
 
 RUN cd ./custom_nodes && \
-	python3 -m pip install -r was-node-suite-comfyui/requirements.txt \
+	python3 -m pip install --no-cache-dir -r was-node-suite-comfyui/requirements.txt \
 	-r ComfyUI-Florence2/requirements.txt \
-	-r comfy-image-saver/requirements.txt \
 	-r ComfyUI-MediaMixer/requirements.txt \
-	-r ComfyUI-Crystools/requirements.txt \
-	-r ComfyUI-KJNodes/requirements.txt
+	-r ComfyUI-KJNodes/requirements.txt \
+	-r comfy_mtb/requirements.txt
 
 EXPOSE 8188
 

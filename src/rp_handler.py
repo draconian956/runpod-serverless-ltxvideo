@@ -270,7 +270,7 @@ def handler(job):
 	file_indicator = (
 		history.get(prompt_id, {})
 		.get('outputs', {})
-		.get('40', {})
+		.get('60', {})
 		.get('gifs', [])
 	)[0]
 

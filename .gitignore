@@ -169,3 +169,6 @@ cython_debug/
 /video_base64_decoder.py
 /.vscode
 *.code-workspace
+/PixArt-XL-2-1024-MS
+/LLM
+/placeholder_*

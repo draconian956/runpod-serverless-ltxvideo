@@ -1,0 +1,456 @@
+{
+  "8": {
+    "inputs": {
+      "samples": [
+        "187",
+        0
+      ],
+      "vae": [
+        "102",
+        1
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "14": {
+    "inputs": {
+      "sampler_name": "dpm_2"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "K采样器选择"
+    }
+  },
+  "36": {
+    "inputs": {
+      "noise": [
+        "37",
+        0
+      ],
+      "guider": [
+        "130",
+        0
+      ],
+      "sampler": [
+        "14",
+        0
+      ],
+      "sigmas": [
+        "104",
+        0
+      ],
+      "latent_image": [
+        "103",
+        1
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "自定义采样器（高级）"
+    }
+  },
+  "37": {
+    "inputs": {
+      "noise_seed": 268038253727393
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "随机噪波"
+    }
+  },
+  "60": {
+    "inputs": {
+      "frame_rate": 24,
+      "loop_count": 0,
+      "filename_prefix": "LTXVideo",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": false,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine 🎥🅥🅗🅢"
+    }
+  },
+  "81": {
+    "inputs": {
+      "scheduler": "ddim_uniform",
+      "steps": 10,
+      "denoise": 1,
+      "model": [
+        "103",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "基本调度器"
+    }
+  },
+  "87": {
+    "inputs": {
+      "text": [
+        "115",
+        0
+      ],
+      "clip": [
+        "142",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "88": {
+    "inputs": {
+      "text": "worst quality, inconsistent motion, blurry, jittery, distorted, watermarks, subtitles, text",
+      "clip": [
+        "142",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP文本编码"
+    }
+  },
+  "102": {
+    "inputs": {
+      "ckpt_name": "lightricksLTXV_2b091.safetensors",
+      "dtype": "bfloat16"
+    },
+    "class_type": "LTXVLoader",
+    "_meta": {
+      "title": "🅛🅣🅧 LTXV Loader"
+    }
+  },
+  "103": {
+    "inputs": {
+      "preset": "Custom",
+      "width": [
+        "155",
+        1
+      ],
+      "height": [
+        "155",
+        2
+      ],
+      "frames_number": 9,
+      "frame_rate": 24,
+      "batch": 1,
+      "mixed_precision": true,
+      "img_compression": 30,
+      "model": [
+        "128",
+        0
+      ],
+      "vae": [
+        "102",
+        1
+      ],
+      "conditioning": [
+        "155",
+        0
+      ]
+    },
+    "class_type": "LTXVModelConfigurator",
+    "_meta": {
+      "title": "🅛🅣🅧 LTXV Model Configurator"
+    }
+  },
+  "104": {
+    "inputs": {
+      "sigma_shift": [
+        "103",
+        2
+      ],
+      "stretch": true,
+      "terminal": 0.1,
+      "sigmas": [
+        "81",
+        0
+      ]
+    },
+    "class_type": "LTXVShiftSigmas",
+    "_meta": {
+      "title": "🅛🅣🅧 LTXV Shift Sigmas"
+    }
+  },
+  "106": {
+    "inputs": {
+      "image": "placeholder_image.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "加载图像"
+    }
+  },
+  "110": {
+    "inputs": {
+      "model": "microsoft/Florence-2-base",
+      "precision": "fp16",
+      "attention": "sdpa"
+    },
+    "class_type": "DownloadAndLoadFlorence2Model",
+    "_meta": {
+      "title": "DownloadAndLoadFlorence2Model"
+    }
+  },
+  "111": {
+    "inputs": {
+      "text_input": "",
+      "task": "more_detailed_caption",
+      "fill_mask": true,
+      "keep_model_loaded": false,
+      "max_new_tokens": 256,
+      "num_beams": 3,
+      "do_sample": true,
+      "output_mask_select": "",
+      "seed": 350738688717805,
+      "image": [
+        "185",
+        0
+      ],
+      "florence2_model": [
+        "110",
+        0
+      ]
+    },
+    "class_type": "Florence2Run",
+    "_meta": {
+      "title": "Florence2Run"
+    }
+  },
+  "112": {
+    "inputs": {
+      "string": [
+        "111",
+        2
+      ],
+      "old": "image",
+      "new": "video"
+    },
+    "class_type": "String Replace (mtb)",
+    "_meta": {
+      "title": "String Replace (mtb)"
+    }
+  },
+  "113": {
+    "inputs": {
+      "string": [
+        "117",
+        0
+      ],
+      "old": "painting",
+      "new": "video"
+    },
+    "class_type": "String Replace (mtb)",
+    "_meta": {
+      "title": "String Replace (mtb)"
+    }
+  },
+  "114": {
+    "inputs": {
+      "string": [
+        "113",
+        0
+      ],
+      "old": "illustration",
+      "new": "video"
+    },
+    "class_type": "String Replace (mtb)",
+    "_meta": {
+      "title": "String Replace (mtb)"
+    }
+  },
+  "115": {
+    "inputs": {
+      "action": "append",
+      "tidy_tags": "no",
+      "text_a": [
+        "114",
+        0
+      ],
+      "text_b": "",
+      "text_c": "\nThe scene is captured in real-life 8K resolution amazing quality footage.\nThe video is full of dynamics, not just simple camera shakes."
+    },
+    "class_type": "StringFunction|pysssss",
+    "_meta": {
+      "title": "String Function 🐍"
+    }
+  },
+  "117": {
+    "inputs": {
+      "string": [
+        "112",
+        0
+      ],
+      "old": "photo",
+      "new": "video"
+    },
+    "class_type": "String Replace (mtb)",
+    "_meta": {
+      "title": "String Replace (mtb)"
+    }
+  },
+  "128": {
+    "inputs": {
+      "stg_mode": "attention",
+      "block_indices": "14",
+      "model": [
+        "102",
+        0
+      ]
+    },
+    "class_type": "LTXVApplySTG",
+    "_meta": {
+      "title": "🅛🅣🅧 LTXV Apply STG"
+    }
+  },
+  "130": {
+    "inputs": {
+      "cfg": 3,
+      "stg": 1,
+      "rescale": 0.75,
+      "model": [
+        "103",
+        0
+      ],
+      "positive": [
+        "87",
+        0
+      ],
+      "negative": [
+        "88",
+        0
+      ]
+    },
+    "class_type": "STGGuider",
+    "_meta": {
+      "title": "🅛🅣🅧 STG Guider"
+    }
+  },
+  "142": {
+    "inputs": {
+      "clip_name": "stableDiffusion3SD3_textEncoderT5XXLFP16.safetensors",
+      "type": "ltxv"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "加载CLIP"
+    }
+  },
+  "155": {
+    "inputs": {
+      "width": 1280,
+      "height": 720,
+      "upscale_method": "bilinear",
+      "keep_proportion": true,
+      "divisible_by": 32,
+      "crop": "disabled",
+      "image": [
+        "185",
+        0
+      ]
+    },
+    "class_type": "ImageResizeKJ",
+    "_meta": {
+      "title": "Resize Image"
+    }
+  },
+  "181": {
+    "inputs": {
+      "video": "placeholder_video.mp4",
+      "force_rate": 0,
+      "force_size": "Disabled",
+      "custom_width": 512,
+      "custom_height": 512,
+      "frame_load_cap": 0,
+      "skip_first_frames": 0,
+      "select_every_nth": 1
+    },
+    "class_type": "VHS_LoadVideo",
+    "_meta": {
+      "title": "Load Video (Upload) 🎥🅥🅗🅢"
+    }
+  },
+  "185": {
+    "inputs": {
+      "ANY": [
+        "189",
+        0
+      ],
+      "IF_TRUE": [
+        "186",
+        0
+      ],
+      "IF_FALSE": [
+        "106",
+        0
+      ]
+    },
+    "class_type": "If ANY return A else B-🔬",
+    "_meta": {
+      "title": "If ANY return A else B"
+    }
+  },
+  "186": {
+    "inputs": {
+      "images": [
+        "181",
+        0
+      ]
+    },
+    "class_type": "FinalFrameSelector",
+    "_meta": {
+      "title": "Final Frame Selector"
+    }
+  },
+  "187": {
+    "inputs": {
+      "value": [
+        "36",
+        1
+      ]
+    },
+    "class_type": "UnloadAllModels",
+    "_meta": {
+      "title": "UnloadAllModels"
+    }
+  },
+  "189": {
+    "inputs": {
+      "value": false
+    },
+    "class_type": "Bool-🔬",
+    "_meta": {
+      "title": "Should use last frame of video"
+    }
+  },
+  "190": {
+    "inputs": {
+      "value": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "UnloadAllModels",
+    "_meta": {
+      "title": "UnloadAllModels"
+    }
+  }
+}
