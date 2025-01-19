@@ -3,7 +3,8 @@ import os
 import time
 import urllib
 import uuid
-from base64 import b64encode
+from base64 import b64decode, b64encode
+from io import BytesIO
 
 import requests
 import runpod
@@ -221,10 +222,23 @@ def get_file_content(filename, subfolder, folder_type):
 	with urllib.request.urlopen("http://{}/view?{}".format(server_address, url_values)) as response:
 		return response.read()
 
-
 def get_history(prompt_id):
 	with urllib.request.urlopen("http://{}/history/{}".format(server_address, prompt_id)) as response:
 		return json.loads(response.read())
+
+def handle_upload_file(filename, b64_file_content, folder_type=None):
+	blob = b64decode(b64_file_content)
+
+	file_param = {
+		'image': (filename, BytesIO(blob))
+	}
+	data_param = {
+		'overwrite': 1,
+		'type': folder_type,
+	}
+	req = requests.post(f'http://{server_address}/upload/image', files=file_param, data=data_param)
+
+	return req.json()
 
 # ---------------------------------------------------------------------------- #
 #                                RunPod Handler                                #
@@ -242,6 +256,9 @@ def get_history(prompt_id):
 
 def handler(job):
 	try:
+		if job['input']['api']['endpoint'] == '/upload/image':
+			return handle_upload_file(job['input']['filename'], job['input']['b64_file_content'])
+
 		queued_workflow = queue_prompt(job['input']['payload'])
 		prompt_id = queued_workflow['prompt_id']
 		print(f"runpod-worker-comfy - queued workflow with ID {prompt_id}")

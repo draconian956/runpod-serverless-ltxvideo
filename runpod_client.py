@@ -6,17 +6,40 @@ import mimetypes
 import urllib.parse
 import urllib.request
 import uuid
+from base64 import b64decode, b64encode
 from pathlib import Path
 from pprint import pprint as echo
-from random import randint
 from time import sleep
 
-import pendulum
 import requests
 import websocket  # NOTE: websocket-client (https://github.com/websocket-client/websocket-client)
 
+runpodURL = ''
+
 server_address = "127.0.0.1:8189"
 client_id = str(uuid.uuid4())
+
+RunPodTerminableStatusList = ['COMPLETED', 'FAILED', 'CANCELLED', 'TIMED_OUT']
+
+
+class Memory:
+	def __init__(self):
+		self.runpod_endpoint_id = None
+		self.header = {
+			'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.41',
+			'authorization': Path('.runpod_api_key').read_text(encoding='utf-8'),
+		}
+		self.runpod_input_tpl = {
+			'input': {
+				'api': {
+					'method': 'POST',
+					'endpoint': '/prompt'
+				},
+			}
+		}
+
+
+mem = Memory()
 
 def queue_prompt(prompt):
 	p = {"prompt": prompt, "client_id": client_id}
@@ -34,52 +57,33 @@ def get_history(prompt_id):
 	with urllib.request.urlopen(f'http://{server_address}/history/{prompt_id}') as response:
 		return json.loads(response.read())
 
-def upload_image(file_path, folder_type=None):
+def upload_image(file_path):
 	FilePathObj = Path(file_path)
 
-	with FilePathObj.open('rb') as img_file:
-		file_param = {
-			'image': img_file
-		}
-		data_param = {
-			'overwrite': 1,
-			'type': folder_type,
-		}
-		req = requests.post(f'http://{server_address}/upload/image', files=file_param, data=data_param)
+	data_tpl = mem.runpod_input_tpl
+	data_tpl['input']['api']['endpoint'] = '/upload/image'
+	data_tpl['input']['filename'] = FilePathObj.name
+	data_tpl['input']['b64_file_content'] = b64encode(FilePathObj.read_bytes()).decode('utf-8')
+	req = requests.post(runpodURL, json=data_tpl, headers=mem.header)
 
 	return req.json()
 
-def get_images(ws, prompt):
-	prompt_id = queue_prompt(prompt)['prompt_id']
-	output_images = {}
-	current_node = ""
-	while True:
-		out = ws.recv()
-		if isinstance(out, str):
-			message = json.loads(out)
+def PollRunPodStatus(JobID=''):
+		r = requests.get(
+			url=f'https://api.runpod.ai/v2/{mem.runpod_endpoint_id}/status/',
+			json={},
+			headers=mem.header
+		)
 
-			with Path('message_log.log').open('a', encoding='utf8') as f:
-				f.write(json.dumps(message, indent=4))
-				f.write('\r\n\r\n')
+		# logging.debug('PollRunPodStatus ::: r.text')
+		# logging.debug(r.text)
+		# logging.debug('PollRunPodStatus ::: r.json()')
+		# logging.debug(r.json())
 
-			if message['type'] == 'executing':
-				data = message['data']
-
-				if data['prompt_id'] == prompt_id:
-					if data['node'] is None:
-						break  # Execution is done
-					else:
-						current_node = data['node']
-		else:
-			if current_node == 'save_image_websocket_node':
-				images_output = output_images.get(current_node, [])
-				images_output.append(out[8:])
-				output_images[current_node] = images_output
-
-	return output_images
+		return r.json()
 
 
-demo_file_path = 'D:\\AI YT 影片工作區\\圖轉影片候選圖\\為什麼多數人一出生就要被迫努力向上／被奴役，而不是充分享受身為一個生命的喜悅.png'
+demo_file_path = 'D:\\AI YT 影片工作區\\圖轉影片候選圖\\為什麼只有極少數的人能過上好生活並且自己不是那少數人裡的其中之一.png'
 prompt_text = Path('api_demo_input.json').read_text(encoding='utf8')
 
 prompt = json.loads(prompt_text)
@@ -92,7 +96,21 @@ prompt = json.loads(prompt_text)
 # }
 upload_img_resp = upload_image(demo_file_path)
 
-isVideoFile = mimetypes.guess_type(upload_img_resp['name'])[0].startswith('video')
+mem.runpod_endpoint_id = upload_img_resp['id']
+file_upload_resp = None
+
+while file_upload_resp is None:
+	polled_resp = PollRunPodStatus()
+	JobState = polled_resp['status']
+
+	if JobState in RunPodTerminableStatusList:
+		file_upload_resp = polled_resp
+		break
+
+	echo('任務尚未完成，休息 1 秒後再次檢查任務狀態...')
+	sleep(1)
+
+isVideoFile = mimetypes.guess_type(file_upload_resp['name'])[0].startswith('video')
 
 if isVideoFile:
 	prompt['181']['inputs']['video'] = upload_img_resp['name']
@@ -103,18 +121,11 @@ else:
 
 prompt['189']['inputs']['value'] = isVideoFile
 
-prompt['37']['inputs']['noise_seed'] = randint(1, 9999999999999999)
-prompt['111']['inputs']['seed'] = randint(1, 9999999999999999)
-
-ws = websocket.WebSocket()
-ws.connect("ws://{}/ws?clientId={}".format(server_address, client_id))
-
-echo(f'[{pendulum.now().to_datetime_string()}] 正在產生影片...')
 queued_workflow = queue_prompt(prompt)
 prompt_id = queued_workflow['prompt_id']
 history = get_history(prompt_id)
 
-while prompt_id not in history or not history.get(prompt_id, {}).get('outputs'):
+while prompt_id not in history:
 	history = get_history(prompt_id)
 	sleep(1)
 
@@ -127,5 +138,3 @@ image = get_image(
 )
 Path(file_indicator.get('filename')).write_bytes(image)
 ws.close()
-
-echo(f'[{pendulum.now().to_datetime_string()}] 產生完畢！')

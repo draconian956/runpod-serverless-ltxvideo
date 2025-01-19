@@ -86,7 +86,7 @@
   "81": {
     "inputs": {
       "scheduler": "ddim_uniform",
-      "steps": 10,
+      "steps": 60,
       "denoise": 1,
       "model": [
         "103",
@@ -148,7 +148,7 @@
         "155",
         2
       ],
-      "frames_number": 9,
+      "frames_number": 121,
       "frame_rate": 24,
       "batch": 1,
       "mixed_precision": true,

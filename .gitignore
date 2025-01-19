@@ -172,3 +172,4 @@ cython_debug/
 /PixArt-XL-2-1024-MS
 /LLM
 /placeholder_*
+.runpod_api_key
