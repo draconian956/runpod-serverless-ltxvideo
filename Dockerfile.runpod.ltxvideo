@@ -50,8 +50,6 @@ RUN python3 -m pip install --upgrade pip && \
 
 COPY src ${ROOT}/
 
-RUN rm ${ROOT}/test_input.json || true
-
 # Create necessary directories
 RUN mkdir -p models/checkpoints models/vae models/diffusion_models models/clip models/text_encoders models/LLM input
 
@@ -96,7 +94,7 @@ ENV CLI_ARGS=""
 
 RUN chmod +x ${ROOT}/start.sh
 
-EXPOSE 8188
+EXPOSE 80 443 8188
 
 # Start the container
 CMD ["sh","/app/start.sh"]

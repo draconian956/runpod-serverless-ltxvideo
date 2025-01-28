@@ -24,3 +24,25 @@ services:
             - driver: nvidia
               count: 1 # alternatively, use `count: all` for all GPUs
               capabilities: [ gpu ]
+  ltx_rp:
+    build:
+      context: .
+      dockerfile: Dockerfile.runpod.ltxvideo
+    image: quantumash/runpod-serverless-ltxvideo:runpod
+    container_name: ltxvideo_runpod
+    volumes:
+      - D:\user\Desktop\ComfyUIOutput:/app/ComfyUI/output
+      - D:\AI 實驗場\runpod-serverless-ltxvideo\src\test_input.json:/app/test_input.json
+    ports:
+      - "8189:8188"
+    tty: true
+    restart: "no"
+    networks:
+      - comfyui_shared
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1 # alternatively, use `count: all` for all GPUs
+              capabilities: [ gpu ]

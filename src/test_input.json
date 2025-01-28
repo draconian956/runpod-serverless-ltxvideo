@@ -1,138 +1,462 @@
 {
-    "input":{
-        "api":{
-            "method":"POST",
-            "endpoint":"/prompt"
+    "input": {
+        "api": {
+            "method": "POST",
+            "endpoint": "/prompt"
         },
-        "payload":{
-            "3":{
-                "inputs":{
-                    "seed":869477795128930,
-                    "steps":30,
-                    "cfg":7,
-                    "sampler_name":"euler",
-                    "scheduler":"simple",
-                    "denoise":1,
-                    "model":[
+        "payload": {
+            "8": {
+                "inputs": {
+                    "samples": [
+                        "187",
+                        0
+                    ],
+                    "vae": [
+                        "102",
+                        1
+                    ]
+                },
+                "class_type": "VAEDecode",
+                "_meta": {
+                    "title": "VAE解码"
+                }
+            },
+            "14": {
+                "inputs": {
+                    "sampler_name": "dpm_2"
+                },
+                "class_type": "KSamplerSelect",
+                "_meta": {
+                    "title": "K采样器选择"
+                }
+            },
+            "36": {
+                "inputs": {
+                    "noise": [
                         "37",
                         0
                     ],
-                    "positive":[
-                        "6",
+                    "guider": [
+                        "130",
                         0
                     ],
-                    "negative":[
-                        "7",
+                    "sampler": [
+                        "14",
                         0
                     ],
-                    "latent_image":[
-                        "21",
-                        0
-                    ]
-                },
-                "class_type":"KSampler",
-                "_meta":{
-                    "title":"K采样器"
-                }
-            },
-            "6":{
-                "inputs":{
-                    "text":"In the heart of a mystical valley, two of the greatest wizards of their time, Alden and Lyra, stood facing each other. The ground trembled beneath them, and the air buzzed with raw magical energy. They had been rivals for decades, and now, only one would claim the title of Supreme Wizard.\n\nAlden raised his staff, its crystal glowing with the power of fire. \"Prepare yourself, Lyra,\" he said with a grin. \"You may control the winds, but I control the flames.\"\n\nLyra smirked, her hands weaving through the air. A gust of wind swirled around her, lifting her cloak. \"We'll see about that,\" she replied. \"I can turn your flames to smoke with a single breath.\"\n\nWithout warning, Alden thrust his staff forward, unleashing a massive wave of fire that surged toward Lyra. But with a swift motion, Lyra raised her hand, and the flames were swallowed by a violent gust of wind.\n\n\"Impressive,\" Alden muttered, his eyes narrowing. He slammed his staff onto the ground, causing the earth to quake, sending jagged rocks flying toward Lyra. But she leaped into the air, soaring on a gust of wind that carried her high above the chaos below.\n\n\"You can't win with just fire and earth,\" Lyra called down. \"I control the sky itself!\"\n\nShe raised both arms to the heavens, summoning a storm of thunder and lightning. Bolts of electricity crackled through the sky, striking down toward Alden. But Alden was prepared. With a wave of his staff, the flames surged around him, creating a fiery shield that absorbed the lightning strikes.\n\nThe battle raged on, each master summoning their most powerful spells. But as the sun began to set, they both paused, exhausted but not defeated. The valley lay in ruins around them, a testament to the destructive power they had unleashed.\n\nAlden wiped his brow and looked at Lyra, his rival and equal. \"Maybe... maybe there's more to magic than just fire and wind.\"\n\nLyra smiled, lowering her hands. \"Perhaps, Alden. Perhaps.\"\n\nAnd with that, the two wizards shared a moment of mutual respect. They might be rivals, but they were also the best. And in the end, that was enough.",
-                    "clip":[
-                        "38",
-                        0
-                    ]
-                },
-                "class_type":"CLIPTextEncode",
-                "_meta":{
-                    "title":"CLIP文本编码（提示）"
-                }
-            },
-            "7":{
-                "inputs":{
-                    "text":"",
-                    "clip":[
-                        "38",
-                        0
-                    ]
-                },
-                "class_type":"CLIPTextEncode",
-                "_meta":{
-                    "title":"CLIP文本编码（提示）"
-                }
-            },
-            "8":{
-                "inputs":{
-                    "samples":[
-                        "3",
+                    "sigmas": [
+                        "104",
                         0
                     ],
-                    "vae":[
-                        "39",
-                        0
+                    "latent_image": [
+                        "103",
+                        1
                     ]
                 },
-                "class_type":"VAEDecode",
-                "_meta":{
-                    "title":"VAE解码"
+                "class_type": "SamplerCustomAdvanced",
+                "_meta": {
+                    "title": "自定义采样器（高级）"
                 }
             },
-            "21":{
-                "inputs":{
-                    "width":848,
-                    "height":480,
-                    "length":43,
-                    "batch_size":1
+            "37": {
+                "inputs": {
+                    "noise_seed": 268038253727393
                 },
-                "class_type":"EmptyMochiLatentVideo",
-                "_meta":{
-                    "title":"空Mochi潜在视频"
+                "class_type": "RandomNoise",
+                "_meta": {
+                    "title": "随机噪波"
                 }
             },
-            "28":{
-                "inputs":{
-                    "filename_prefix":"ComfyUI",
-                    "fps":24,
-                    "lossless":false,
-                    "quality":80,
-                    "method":"default",
-                    "images":[
+            "60": {
+                "inputs": {
+                    "frame_rate": 24,
+                    "loop_count": 0,
+                    "filename_prefix": "LTXVideo",
+                    "format": "video/h264-mp4",
+                    "pix_fmt": "yuv420p",
+                    "crf": 19,
+                    "save_metadata": false,
+                    "trim_to_audio": false,
+                    "pingpong": false,
+                    "save_output": true,
+                    "images": [
                         "8",
                         0
                     ]
                 },
-                "class_type":"SaveAnimatedWEBP",
-                "_meta":{
-                    "title":"保存动画WEBP"
+                "class_type": "VHS_VideoCombine",
+                "_meta": {
+                    "title": "Video Combine 🎥🅥🅗🅢"
                 }
             },
-            "37":{
-                "inputs":{
-                    "unet_name":"mochi1PreviewVideo_fp8Scaled.safetensors",
-                    "weight_dtype":"default"
+            "81": {
+                "inputs": {
+                    "scheduler": "ddim_uniform",
+                    "steps": 60,
+                    "denoise": 1,
+                    "model": [
+                        "103",
+                        0
+                    ]
                 },
-                "class_type":"UNETLoader",
-                "_meta":{
-                    "title":"加载扩散模型"
+                "class_type": "BasicScheduler",
+                "_meta": {
+                    "title": "基本调度器"
                 }
             },
-            "38":{
-                "inputs":{
-                    "clip_name":"mochi1PreviewVideo_t5xxlFP8E4m3fnScaled.safetensors",
-                    "type":"mochi"
+            "87": {
+                "inputs": {
+                    "text": [
+                        "115",
+                        0
+                    ],
+                    "clip": [
+                        "142",
+                        0
+                    ]
                 },
-                "class_type":"CLIPLoader",
-                "_meta":{
-                    "title":"加载CLIP"
+                "class_type": "CLIPTextEncode",
+                "_meta": {
+                    "title": "CLIP文本编码"
                 }
             },
-            "39":{
-                "inputs":{
-                    "vae_name":"mochi1PreviewVideo_vae.safetensors"
+            "88": {
+                "inputs": {
+                    "text": "worst quality, inconsistent motion, blurry, jittery, distorted, watermarks, subtitles, text",
+                    "clip": [
+                        "142",
+                        0
+                    ]
                 },
-                "class_type":"VAELoader",
-                "_meta":{
-                    "title":"加载VAE"
+                "class_type": "CLIPTextEncode",
+                "_meta": {
+                    "title": "CLIP文本编码"
+                }
+            },
+            "102": {
+                "inputs": {
+                    "ckpt_name": "lightricksLTXV_2b091.safetensors",
+                    "dtype": "bfloat16"
+                },
+                "class_type": "LTXVLoader",
+                "_meta": {
+                    "title": "🅛🅣🅧 LTXV Loader"
+                }
+            },
+            "103": {
+                "inputs": {
+                    "preset": "Custom",
+                    "width": [
+                        "155",
+                        1
+                    ],
+                    "height": [
+                        "155",
+                        2
+                    ],
+                    "frames_number": 1,
+                    "frame_rate": 24,
+                    "batch": 1,
+                    "mixed_precision": true,
+                    "img_compression": 30,
+                    "model": [
+                        "128",
+                        0
+                    ],
+                    "vae": [
+                        "102",
+                        1
+                    ],
+                    "conditioning": [
+                        "155",
+                        0
+                    ]
+                },
+                "class_type": "LTXVModelConfigurator",
+                "_meta": {
+                    "title": "🅛🅣🅧 LTXV Model Configurator"
+                }
+            },
+            "104": {
+                "inputs": {
+                    "sigma_shift": [
+                        "103",
+                        2
+                    ],
+                    "stretch": true,
+                    "terminal": 0.1,
+                    "sigmas": [
+                        "81",
+                        0
+                    ]
+                },
+                "class_type": "LTXVShiftSigmas",
+                "_meta": {
+                    "title": "🅛🅣🅧 LTXV Shift Sigmas"
+                }
+            },
+            "106": {
+                "inputs": {
+                    "image": "placeholder_image.png",
+                    "upload": "image"
+                },
+                "class_type": "LoadImage",
+                "_meta": {
+                    "title": "加载图像"
+                }
+            },
+            "110": {
+                "inputs": {
+                    "model": "microsoft/Florence-2-base",
+                    "precision": "fp16",
+                    "attention": "sdpa"
+                },
+                "class_type": "DownloadAndLoadFlorence2Model",
+                "_meta": {
+                    "title": "DownloadAndLoadFlorence2Model"
+                }
+            },
+            "111": {
+                "inputs": {
+                    "text_input": "",
+                    "task": "more_detailed_caption",
+                    "fill_mask": true,
+                    "keep_model_loaded": false,
+                    "max_new_tokens": 256,
+                    "num_beams": 3,
+                    "do_sample": true,
+                    "output_mask_select": "",
+                    "seed": 350738688717805,
+                    "image": [
+                        "185",
+                        0
+                    ],
+                    "florence2_model": [
+                        "110",
+                        0
+                    ]
+                },
+                "class_type": "Florence2Run",
+                "_meta": {
+                    "title": "Florence2Run"
+                }
+            },
+            "112": {
+                "inputs": {
+                    "string": [
+                        "111",
+                        2
+                    ],
+                    "old": "image",
+                    "new": "video"
+                },
+                "class_type": "String Replace (mtb)",
+                "_meta": {
+                    "title": "String Replace (mtb)"
+                }
+            },
+            "113": {
+                "inputs": {
+                    "string": [
+                        "117",
+                        0
+                    ],
+                    "old": "painting",
+                    "new": "video"
+                },
+                "class_type": "String Replace (mtb)",
+                "_meta": {
+                    "title": "String Replace (mtb)"
+                }
+            },
+            "114": {
+                "inputs": {
+                    "string": [
+                        "113",
+                        0
+                    ],
+                    "old": "illustration",
+                    "new": "video"
+                },
+                "class_type": "String Replace (mtb)",
+                "_meta": {
+                    "title": "String Replace (mtb)"
+                }
+            },
+            "115": {
+                "inputs": {
+                    "action": "append",
+                    "tidy_tags": "no",
+                    "text_a": [
+                        "114",
+                        0
+                    ],
+                    "text_b": "",
+                    "text_c": "\nThe scene is captured in real-life 8K resolution amazing quality footage.\nThe video is full of dynamics, not just simple camera shakes."
+                },
+                "class_type": "StringFunction|pysssss",
+                "_meta": {
+                    "title": "String Function 🐍"
+                }
+            },
+            "117": {
+                "inputs": {
+                    "string": [
+                        "112",
+                        0
+                    ],
+                    "old": "photo",
+                    "new": "video"
+                },
+                "class_type": "String Replace (mtb)",
+                "_meta": {
+                    "title": "String Replace (mtb)"
+                }
+            },
+            "128": {
+                "inputs": {
+                    "stg_mode": "attention",
+                    "block_indices": "14",
+                    "model": [
+                        "102",
+                        0
+                    ]
+                },
+                "class_type": "LTXVApplySTG",
+                "_meta": {
+                    "title": "🅛🅣🅧 LTXV Apply STG"
+                }
+            },
+            "130": {
+                "inputs": {
+                    "cfg": 3,
+                    "stg": 1,
+                    "rescale": 0.75,
+                    "model": [
+                        "103",
+                        0
+                    ],
+                    "positive": [
+                        "87",
+                        0
+                    ],
+                    "negative": [
+                        "88",
+                        0
+                    ]
+                },
+                "class_type": "STGGuider",
+                "_meta": {
+                    "title": "🅛🅣🅧 STG Guider"
+                }
+            },
+            "142": {
+                "inputs": {
+                    "clip_name": "stableDiffusion3SD3_textEncoderT5XXLFP16.safetensors",
+                    "type": "ltxv"
+                },
+                "class_type": "CLIPLoader",
+                "_meta": {
+                    "title": "加载CLIP"
+                }
+            },
+            "155": {
+                "inputs": {
+                    "width": 1280,
+                    "height": 720,
+                    "upscale_method": "bilinear",
+                    "keep_proportion": true,
+                    "divisible_by": 32,
+                    "crop": "disabled",
+                    "image": [
+                        "185",
+                        0
+                    ]
+                },
+                "class_type": "ImageResizeKJ",
+                "_meta": {
+                    "title": "Resize Image"
+                }
+            },
+            "181": {
+                "inputs": {
+                    "video": "placeholder_video.mp4",
+                    "force_rate": 0,
+                    "force_size": "Disabled",
+                    "custom_width": 512,
+                    "custom_height": 512,
+                    "frame_load_cap": 0,
+                    "skip_first_frames": 0,
+                    "select_every_nth": 1
+                },
+                "class_type": "VHS_LoadVideo",
+                "_meta": {
+                    "title": "Load Video (Upload) 🎥🅥🅗🅢"
+                }
+            },
+            "185": {
+                "inputs": {
+                    "ANY": [
+                        "189",
+                        0
+                    ],
+                    "IF_TRUE": [
+                        "186",
+                        0
+                    ],
+                    "IF_FALSE": [
+                        "106",
+                        0
+                    ]
+                },
+                "class_type": "If ANY return A else B-🔬",
+                "_meta": {
+                    "title": "If ANY return A else B"
+                }
+            },
+            "186": {
+                "inputs": {
+                    "images": [
+                        "181",
+                        0
+                    ]
+                },
+                "class_type": "FinalFrameSelector",
+                "_meta": {
+                    "title": "Final Frame Selector"
+                }
+            },
+            "187": {
+                "inputs": {
+                    "value": [
+                        "36",
+                        1
+                    ]
+                },
+                "class_type": "UnloadAllModels",
+                "_meta": {
+                    "title": "UnloadAllModels"
+                }
+            },
+            "189": {
+                "inputs": {
+                    "value": false
+                },
+                "class_type": "Bool-🔬",
+                "_meta": {
+                    "title": "Should use last frame of video"
+                }
+            },
+            "190": {
+                "inputs": {
+                    "value": [
+                        "8",
+                        0
+                    ]
+                },
+                "class_type": "UnloadAllModels",
+                "_meta": {
+                    "title": "UnloadAllModels"
                 }
             }
         }
